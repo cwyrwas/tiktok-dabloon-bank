@@ -37,7 +37,7 @@ export default function BankManager() {
                 /> 
                 <Text style={styles.textInfo}>Dabloons: {balance}</Text>
                 <Text>Manage your Dabloon inventory below</Text>
-                <Form balance={balance}/>
+                <Form balance={balance} stateChanger={setBalance} />
             </View>
         </SafeAreaView>
     );

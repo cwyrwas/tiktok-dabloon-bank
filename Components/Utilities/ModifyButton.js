@@ -1,11 +1,17 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Pressable, View, Modal, TextInput, Alert, StyleSheet, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
  // temp 
-export default function ModifyButton(props) {
+export default function ModifyButton({balance, label, action, stateChanger}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [text,setText] = useState('');
+
+    useEffect(() => {
+        console.log('label: ' + label);
+        console.log('action: ' + action);
+        console.log('stateChanger: ' + stateChanger);
+    });
 
     return (
         <View>
@@ -40,7 +46,7 @@ export default function ModifyButton(props) {
 
                                 <Pressable
                                     style={styles.submitButton}
-                                    onPress={() => storeValue(text, props.text)}
+                                    onPress={() =>storeValue(text, label).then((value) => stateChanger(value)).then(() => setModalVisible(!modalVisible))}
                                 >
                                     <Text style={styles.submitButtonText}>Submit</Text>
                                 </Pressable>
@@ -52,7 +58,7 @@ export default function ModifyButton(props) {
                 style={[styles.button, styles.buttonOpen]}
                 onPress={() => setModalVisible(true)}
             >
-                <Text style={styles.textStyle}>{props.text}</Text>
+                <Text style={styles.textStyle}>{label}</Text>
             </Pressable>
         </View>
     )
@@ -68,11 +74,14 @@ async function storeValue(value, text)  {
 
     try {
         console.log('Setting new balance value of ' + value);
-        await AsyncStorage.setItem('@balance', value);
+        await AsyncStorage.setItem('@balance', value.toString());
         console.log('Value successfully stored');
     } catch (e) {
         console.log(e);
     }
+
+    console.log(value)
+    return value.toString();
 }
 
 const styles = StyleSheet.create({
@@ -127,7 +136,7 @@ const styles = StyleSheet.create({
         elevation: 5
       },
       button: {
-        borderRadius: 20,
+        borderRadius: 6,
         padding: 10,
         elevation: 2,
         margin: 10

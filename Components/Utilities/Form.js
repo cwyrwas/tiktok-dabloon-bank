@@ -2,16 +2,19 @@ import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import ModifyButton from './ModifyButton';
 
-export default function Form(balance) {
+export default function Form({balance, stateChanger}) {
     return (
         <View style={styles.container}>
             <ModifyButton
-            text="Add Dabloons"
+            label="Add Dabloons"
             action="add"
+            stateChanger={stateChanger}
+            balance={balance}
             />
             <ModifyButton
-            text="Subtract Dabloons"
+            label="Subtract Dabloons"
             action="subtract"
+            stateChanger={stateChanger}
             />
         </View>
     )
@@ -22,8 +25,10 @@ export default function Form(balance) {
 const styles = StyleSheet.create({
    container: {
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',         
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',  
+        width: '100%',
+        paddingTop: 20       
    }
 });
